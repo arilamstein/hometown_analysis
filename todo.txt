@@ -1,0 +1,6 @@
+-Decide what stats to generate for this geo and do it for a single year. Candidate topics:
+    -Race, language spoken at home, ancestry, citizenship.
+-Generate and graph the stats for 3 years (e.g. 2010, 2015, 2020).
+-Can you get the data for the 2000 Decennial and compare it? This is available via the API. 
+    -Did this geo even exist then?
+-Can you get 1980 and 1990 from elsewhere? It is not available via the API. Perhaps via IPUMS?
