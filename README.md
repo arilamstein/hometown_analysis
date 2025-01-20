@@ -7,3 +7,4 @@ While only one location is currently being analyzed, the long-term goal is for t
 Milestones in this project are recorded in Jupyter Notebooks:
   * [01-geographic-choice.ipynb](./01-geographic-choice.ipynb)
   * [02-geographic-stability.ipynb](./02-geographic-stability.ipynb)
+  * [03-tables.ipynb](./03-tables.ipynb)
