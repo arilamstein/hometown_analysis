@@ -1,6 +1,12 @@
 -Decide what stats to generate for this geo and do it for a single year. Candidate topics:
     -Race, language spoken at home, ancestry, citizenship.
 -Generate and graph the stats for 3 years (e.g. 2010, 2015, 2020).
+-Redo this analysis as an aggregation of multiple "places". While there are only 4 "places" with 
+"Great Neck" in their name, it really does look like the "missing places" are all there but under 
+their own name (e.g. Kensington, Kings Point, Lake Success). CensusReporter does a good job of 
+showing them in an interactive map: https://censusreporter.org/profiles/16000US3639309-kensington-ny/. 
+This is likely a requirement for going further back in time, as I believe the School District geography
+was only introduced in 2000.
 -Can you get the data for the 2000 Decennial and compare it? This is available via the API. 
     -Did this geo even exist then?
 -Can you get 1980 and 1990 from elsewhere? It is not available via the API. Perhaps via IPUMS?
