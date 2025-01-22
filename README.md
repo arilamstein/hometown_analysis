@@ -12,7 +12,7 @@ I view this project as having 3 distinct phases. Each phase corresponds to a dis
   2. Adding data from the 2000 Decennial Census, which is available via the Census API.
   3. Adding data from the Decennial Censuses for 1980 and 1990, which I expect to get from [IPUMS](https://www.ipums.org/).
 
-I am currently working on Phase 1. Milestones in this project are recorded in Jupyter Notebooks:
+I am currently working on Phase 1. I am recording my progress using Jupyter Notebooks:
   * [01-geographic-choice.ipynb](./01-geographic-choice.ipynb)
   * [02-geographic-stability.ipynb](./02-geographic-stability.ipynb)
   * [03-tables.ipynb](./03-tables.ipynb)
