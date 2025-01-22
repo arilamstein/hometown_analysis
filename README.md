@@ -10,7 +10,7 @@ While only one location is being analyzed, and through only one specific lens, m
 I view this project as having 3 distinct phases. Each phase corresponds to a distinct location for data:
   1. Using data from the [American Community Survey (ACS) 5-Year Estimates](https://en.wikipedia.org/wiki/American_Community_Survey). Unfortunately this dataset only goes back to 2010.
   2. Adding data from the 2000 Decennial Census, which is available via the Census API.
-  3. Adding data from the Decennial Censuses for 1980 and 1990, which I expect to get from [IPUMS](https://www.ipums.org/).
+  3. Adding data from the Decennial Censuses for 1980 and 1990, which is not available via the API. I expect to get it from [IPUMS](https://www.ipums.org/).
 
 I am currently working on Phase 1. I am recording my progress using Jupyter Notebooks:
   * [01-geographic-choice.ipynb](./01-geographic-choice.ipynb)
