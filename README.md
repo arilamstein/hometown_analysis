@@ -1,6 +1,6 @@
 # hometown_analysis
 
-An attempt to understand how the demographics of my hometown (Great Neck, NY) have changed during my lifetime (1978-Present). I am particularly interested in measuring the impact of two waves of immigration that occured during my lifetime:
+An attempt to understand how the demographics of my hometown (Great Neck, NY) have changed during my lifetime (1978-Present). I am particularly interested in measuring the impact of two waves of immigration:
 
   1. Immigration from Iran due to the Iranian Revolution of 1978-1979.
   2. Immigration from Asia.
