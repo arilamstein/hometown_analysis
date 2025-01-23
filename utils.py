@@ -4,6 +4,9 @@ import pandas as pd
 import censusdis.data as ced
 from censusdis.datasets import ACS5
 
+import plotly.graph_objects as go
+import plotly.io as pio
+
 
 def name_mapper(group, vintage):
     def inner(variable: str):
@@ -79,3 +82,110 @@ def print_labels_for_variables_over_time(df):
             print(f"{variable} has the following labels:")
             for label, years in unique_labels_for_variable.items():
                 print(f"\t'{label}' in years {years}")
+
+
+def graph_ts_df(df, y_cols, title, yaxis_title, set_pio_default_renderer=True):
+    """
+    Create a (multi-line) graph of time series data using plotly.
+
+    Parameters
+    ----------
+    df : dataframe
+        Must have a column called 'Year' which will serve as the x-axis.
+    y_cols : str
+        A list of columns in `df` to create lines for.
+    title : str
+        Title for the graph.
+    yaxis_title : str
+        Title for the y-axis.
+    set_pio_default_renderer : bool
+        By default plotly generates interactive graphs. Unfortunately, these graphs
+        do not render when notebooks are viewed on github. Setting this option to
+        True (the default) sets plotlyio.renderers.default="vscode+png", which also
+        generates png versions of the plots. This allows notebooks which use this
+        function to have their graphs viewable on github.
+
+    Returns
+    -------
+    NoneType
+
+    Examples
+    --------
+    import pandas as pd
+
+    YEARS = [2010, 2015, 2020]
+    GROUP = "B05012"
+    df = None
+
+    for year in YEARS:
+        # This loop can take a while, so provide feedback to the user
+        print(".", end="", flush=True)
+
+        df_new = ced.download(
+            dataset=ACS5,
+            vintage=year,
+            group=GROUP,
+            state=NY,
+            school_district_unified="12510",
+        )
+
+        df_new["Year"] = year
+
+        if df is None:
+            df = df_new
+        else:
+            df = pd.concat([df_new, df])
+
+    df = df.rename(columns=name_mapper(group=GROUP, vintage=2020))
+    graph_ts_df(
+        df,
+        ["Total", "Native", "Foreign-Born"],
+        "Population by Nativity in Great Neck School District",
+        "Population",
+    )
+    """
+
+    # By default plotly graphs are interactive. While this is great locally, they do not render
+    # on github. This allows static version of the graphs to appear on github in addition to seeing
+    # interactive versions locally. See https://github.com/plotly/plotly.py/issues/931#issuecomment-2098209279
+    if set_pio_default_renderer:
+        pio.renderers.default = "vscode+png"
+
+    colorblind_palette = [
+        "#E69F00",
+        "#56B4E9",
+        "#009E73",
+        "#F0E442",
+        "#0072B2",
+        "#D55E00",
+        "#CC79A7",
+    ]
+
+    fig = go.Figure()
+
+    for idx, y_col in enumerate(y_cols):
+        color = "black" if y_col == "Total" else colorblind_palette[idx]
+        fig.add_trace(
+            go.Scatter(
+                x=df["Year"],
+                y=df[y_col],
+                mode="lines+markers",
+                name=y_col,
+                line=dict(color=color),
+                hovertemplate="Year: %{x}<br>" + y_col + ": %{y:,}<extra></extra>",
+            )
+        )
+
+    # Update layout
+    fig.update_layout(
+        title=title,
+        xaxis_title="Year",
+        yaxis_title=yaxis_title,
+        xaxis=dict(
+            tickmode="array",
+            tickvals=df["Year"],
+            ticktext=[str(year) for year in df["Year"]],
+        ),
+    )
+
+    fig.show()
