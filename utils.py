@@ -54,34 +54,54 @@ def get_unique_labels_for_variable(acs, variable, years):
     return labels
 
 
-def get_variables_used(df):
-    non_variable_columns = ["NAME", "COUNTY_NAME", "STATE_NAME", "YEAR"]
-    return [
-        one_column
-        for one_column in df.columns
-        if one_column not in non_variable_columns
-    ]
+def warn_variable_changes(df, dataset, vintages, group):
+    years = df["Year"].unique()
+
+    for col in df.columns:
+        # Not all columns contain actual ACS data. The ones we care about have names like
+        # B01001_001E. That is, they start with the group name.
+        if not col.startswith(group):
+            continue
+
+        unique_labels_for_variable = get_unique_labels_for_variable(dataset, col, vintages)
+
+        if len(unique_labels_for_variable) > 1:
+            print(f"Warning: {col} has had multiple labels over the selected years:")
+            for label, years in unique_labels_for_variable.items():
+                print(f"\t'{label}' in {years}")
 
 
-def get_years_variable_used(df, variable):
-    return df[df[variable].notna()]["YEAR"].unique()
+def download_multiyear(dataset, vintages, group, rename_vars=True, **kwargs):
 
+    df = None
 
-def print_labels_for_variables_over_time(df):
-    variables_used = get_variables_used(df)
+    for vintage in vintages:
+        # This loop can take a while, so provide feedback to the user
+        print(".", end="", flush=True)
 
-    for variable in variables_used:
-        years_variable_used = sorted(get_years_variable_used(df, variable))
-        unique_labels_for_variable = get_unique_labels_for_variable(
-            ACS5, variable, years_variable_used
+        df_new = ced.download(
+            dataset=dataset,
+            vintage=vintage,
+            group=group,
+            **kwargs,
         )
 
-        if len(unique_labels_for_variable) == 1:
-            print(f"{variable} has only 1 label")
+        df_new["Year"] = vintage
+
+        if df is None:
+            df = df_new
         else:
-            print(f"{variable} has the following labels:")
-            for label, years in unique_labels_for_variable.items():
-                print(f"\t'{label}' in years {years}")
+            df = pd.concat([df, df_new])
+
+    # In the ACS, Sometimes the same variable is used for different things in different years.
+    # For an example see https://arilamstein.com/blog/2024/05/28/creating-time-series-data-from-the-american-community-survey-acs/
+    # This code alerts users of any variables which have had different labels over time.
+    warn_variable_changes(df, dataset, vintages, group)
+
+    if rename_vars:
+        df = df.rename(columns=name_mapper(group=group, vintage=vintages[-1]))
+
+    return df
 
 
 def graph_ts_df(df, y_cols, title, yaxis_title, set_pio_default_renderer=True):
@@ -189,38 +209,3 @@ def graph_ts_df(df, y_cols, title, yaxis_title, set_pio_default_renderer=True):
     )
 
     fig.show()
-
-
-def get_ts_df(acs, years, group, rename_vars=True, **kwargs):
-
-    df = None
-
-    for year in years:
-        # This loop can take a while, so provide feedback to the user
-        print(".", end="", flush=True)
-
-        df_new = ced.download(
-            dataset=acs,
-            vintage=year,
-            group=group,
-            **kwargs,
-        )
-
-        df_new["Year"] = year
-
-        if df is None:
-            df = df_new
-        else:
-            df = pd.concat([df_new, df])
-
-    # In the ACS, Sometimes the same variable is used for different things in different years.
-    # For an example see https://arilamstein.com/blog/2024/05/28/creating-time-series-data-from-the-american-community-survey-acs/
-    # This code alerts users of any variables which have had different labels over time.
-    for col in df.columns:
-        if col.startswith(group):
-           print(get_unique_labels_for_variable(acs, col, years))
-
-    if rename_vars:
-        df = df.rename(columns=name_mapper(group=group, vintage=years[-1]))
-
-    return df.sort_values(by="Year")
