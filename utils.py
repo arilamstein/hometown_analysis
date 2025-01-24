@@ -71,7 +71,7 @@ def warn_variable_changes(df, dataset, vintages, group):
                 print(f"\t'{label}' in {years}")
 
 
-def download_multiyear(dataset, vintages, group, rename_vars=True, **kwargs):
+def download_multiyear(dataset, vintages, group, rename_vars=True, drop_cols=True, **kwargs):
 
     df = None
 
@@ -97,6 +97,9 @@ def download_multiyear(dataset, vintages, group, rename_vars=True, **kwargs):
     # For an example see https://arilamstein.com/blog/2024/05/28/creating-time-series-data-from-the-american-community-survey-acs/
     # This code alerts users of any variables which have had different labels over time.
     warn_variable_changes(df, dataset, vintages, group)
+
+    if drop_cols:
+        df = df[[col for col in df.columns if col.startswith(group) or col == "Year"]]
 
     if rename_vars:
         df = df.rename(columns=name_mapper(group=group, vintage=vintages[-1]))
