@@ -2,18 +2,17 @@ from collections import defaultdict
 import pandas as pd
 
 import censusdis.data as ced
-from censusdis.datasets import ACS5
 
 import plotly.graph_objects as go
 import plotly.io as pio
 
 
-def name_mapper(group, vintage):
+def name_mapper(group, vintage, dataset):
     def inner(variable: str):
         """Map from the variables we got back to their labels."""
         if variable.startswith(group):
             # Look up details of the particular variable:
-            vars = ced.variables.search(ACS5, vintage, group_name=group, name=variable)
+            vars = ced.variables.search(dataset, vintage, group_name=group, name=variable)
             # Get the label and parse out the part we want:
             label = vars.iloc[0]["LABEL"]
             return label.split("!")[-1].split(":")[0]
@@ -106,7 +105,7 @@ def download_multiyear(
         df = df[[col for col in df.columns if col.startswith(group) or col == "Year"]]
 
     if rename_vars:
-        df = df.rename(columns=name_mapper(group=group, vintage=vintages[-1]))
+        df = df.rename(columns=name_mapper(group=group, vintage=vintages[-1], dataset=dataset))
 
     return df
 
