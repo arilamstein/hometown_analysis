@@ -16,4 +16,4 @@ I am currently working on Phase 1. I am recording my progress using Jupyter Note
   * [01-geographic-choice.ipynb](./01-geographic-choice.ipynb)
   * [02-geographic-stability.ipynb](./02-geographic-stability.ipynb)
   * [03-table-selection-and-ingestion.ipynb](./03-table-selection-and-ingestion.ipynb)
-  * [04-analyzing-trends.ipynb](./04-analyzing-trends.ipynb)
+  * [04-multi-year-data.ipynb](./04-multi-year-data.ipynb)

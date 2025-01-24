@@ -63,7 +63,9 @@ def warn_variable_changes(df, dataset, vintages, group):
         if not col.startswith(group):
             continue
 
-        unique_labels_for_variable = get_unique_labels_for_variable(dataset, col, vintages)
+        unique_labels_for_variable = get_unique_labels_for_variable(
+            dataset, col, vintages
+        )
 
         if len(unique_labels_for_variable) > 1:
             print(f"Warning: {col} has had multiple labels over the selected years:")
@@ -71,7 +73,9 @@ def warn_variable_changes(df, dataset, vintages, group):
                 print(f"\t'{label}' in {years}")
 
 
-def download_multiyear(dataset, vintages, group, rename_vars=True, drop_cols=True, **kwargs):
+def download_multiyear(
+    dataset, vintages, group, rename_vars=True, drop_cols=True, **kwargs
+):
 
     df = None
 
@@ -107,7 +111,7 @@ def download_multiyear(dataset, vintages, group, rename_vars=True, drop_cols=Tru
     return df
 
 
-def graph_ts_df(df, y_cols, title, yaxis_title, set_pio_default_renderer=True):
+def graph_multiyear(df, title, yaxis_title, y_cols=None, set_pio_default_renderer=True):
     """
     Create a (multi-line) graph of time series data using plotly.
 
@@ -115,12 +119,13 @@ def graph_ts_df(df, y_cols, title, yaxis_title, set_pio_default_renderer=True):
     ----------
     df : dataframe
         Must have a column called 'Year' which will serve as the x-axis.
-    y_cols : str
-        A list of columns in `df` to create lines for.
     title : str
         Title for the graph.
     yaxis_title : str
         Title for the y-axis.
+    y_cols : str | None
+        A list of columns in `df` to create lines for. If None then will graph all
+        columns except "Year".
     set_pio_default_renderer : bool
         By default plotly generates interactive graphs. Unfortunately, these graphs
         do not render when notebooks are viewed on github. Setting this option to
@@ -136,30 +141,13 @@ def graph_ts_df(df, y_cols, title, yaxis_title, set_pio_default_renderer=True):
     --------
     import pandas as pd
 
-    YEARS = [2010, 2015, 2020]
-    GROUP = "B05012"
-    df = None
-
-    for year in YEARS:
-        # This loop can take a while, so provide feedback to the user
-        print(".", end="", flush=True)
-
-        df_new = ced.download(
-            dataset=ACS5,
-            vintage=year,
-            group=GROUP,
-            state=NY,
-            school_district_unified="12510",
-        )
-
-        df_new["Year"] = year
-
-        if df is None:
-            df = df_new
-        else:
-            df = pd.concat([df_new, df])
-
-    df = df.rename(columns=name_mapper(group=GROUP, vintage=2020))
+    df = download_multiyear(
+        dataset=ACS5,
+        vintages=[2010, 2015, 2020],
+        group="B05012",
+        state=NY,
+        school_district_unified="12510",
+    )
     graph_ts_df(
         df,
         ["Total", "Native", "Foreign-Born"],
@@ -173,6 +161,9 @@ def graph_ts_df(df, y_cols, title, yaxis_title, set_pio_default_renderer=True):
     # interactive versions locally. See https://github.com/plotly/plotly.py/issues/931#issuecomment-2098209279
     if set_pio_default_renderer:
         pio.renderers.default = "vscode+png"
+
+    if not y_cols:
+        y_cols = [col for col in df.columns if col != "Year"]
 
     colorblind_palette = [
         "#E69F00",
