@@ -15,4 +15,5 @@ I view this project as having 3 distinct phases. Each phase corresponds to a dis
 I am currently working on Phase 1. I am recording my progress using Jupyter Notebooks:
   * [01-geographic-choice.ipynb](./01-geographic-choice.ipynb)
   * [02-geographic-stability.ipynb](./02-geographic-stability.ipynb)
-  * [03-tables.ipynb](./03-tables.ipynb)
+  * [03-table-selection-and-ingestion.ipynb](./03-table-selection-and-ingestion.ipynb)
+  * [04-analyzing-trends.ipynb](./04-analyzing-trends.ipynb)
