@@ -189,3 +189,38 @@ def graph_ts_df(df, y_cols, title, yaxis_title, set_pio_default_renderer=True):
     )
 
     fig.show()
+
+
+def get_ts_df(acs, years, group, rename_vars=True, **kwargs):
+
+    df = None
+
+    for year in years:
+        # This loop can take a while, so provide feedback to the user
+        print(".", end="", flush=True)
+
+        df_new = ced.download(
+            dataset=acs,
+            vintage=year,
+            group=group,
+            **kwargs,
+        )
+
+        df_new["Year"] = year
+
+        if df is None:
+            df = df_new
+        else:
+            df = pd.concat([df_new, df])
+
+    # In the ACS, Sometimes the same variable is used for different things in different years.
+    # For an example see https://arilamstein.com/blog/2024/05/28/creating-time-series-data-from-the-american-community-survey-acs/
+    # This code alerts users of any variables which have had different labels over time.
+    for col in df.columns:
+        if col.startswith(group):
+           print(get_unique_labels_for_variable(acs, col, years))
+
+    if rename_vars:
+        df = df.rename(columns=name_mapper(group=group, vintage=years[-1]))
+
+    return df.sort_values(by="Year")
