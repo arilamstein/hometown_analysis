@@ -12,7 +12,9 @@ def name_mapper(group, vintage, dataset):
         """Map from the variables we got back to their labels."""
         if variable.startswith(group):
             # Look up details of the particular variable:
-            vars = ced.variables.search(dataset, vintage, group_name=group, name=variable)
+            vars = ced.variables.search(
+                dataset, vintage, group_name=group, name=variable
+            )
             # Get the label and parse out the part we want:
             label = vars.iloc[0]["LABEL"]
             return label.split("!")[-1].split(":")[0]
@@ -53,7 +55,11 @@ def get_unique_labels_for_variable(acs, variable, years):
     return labels
 
 
-def warn_variable_changes(df, dataset, vintages, group):
+class VariableMistmatchOverTime(Exception):
+    pass
+
+
+def warn_variable_changes(df, dataset, vintages, group, prompt):
     years = df["Year"].unique()
 
     for col in df.columns:
@@ -70,11 +76,59 @@ def warn_variable_changes(df, dataset, vintages, group):
             print(f"Warning: {col} has had multiple labels over the selected years:")
             for label, years in unique_labels_for_variable.items():
                 print(f"\t'{label}' in {years}")
+            if prompt:
+                if input("Continue downloading dataset (y/n)?") != "y":
+                    raise VariableMistmatchOverTime()
 
 
 def download_multiyear(
-    dataset, vintages, group, rename_vars=True, drop_cols=True, **kwargs
+    dataset,
+    vintages,
+    group,
+    rename_vars=True,
+    drop_cols=True,
+    prompt=True,
+    **kwargs,
 ):
+    """
+    Download multiple years of ACS data into a single dataframe.
+
+    Parameters
+    ----------
+    dataset
+        Assumed to be `censusdis.datasets.ACS1` or `censusdis.datasets.ACS5`.
+    vintages
+        A list of years to download data for.
+    group
+        The ACS table to download.
+    rename_vars
+        If True, rename the columns from variables (ex. "B01001_001E") to their labels (ex. "Total").
+        The labels for the last year are used.
+    drop_cols
+        If True, drop cols that do not contain variables or the year (ex. geography columns).
+    prompt
+        This function emits a warning each time a downloaded variable has had multiple labels over time. If True, prompt the user
+        whether they want to continue downloading the dataset despite the differences.
+    **kwargs
+        Geography parameters passed directly to `ced.download`.
+
+    Returns
+    -------
+    A dataframe.
+
+    Examples
+    --------
+    import pandas as pd
+
+    df = download_multiyear(
+        dataset=ACS5,
+        vintages=[2010, 2015, 2020],
+        group="B05012",
+        prompt=False,
+        state=NY,
+        school_district_unified="12510",
+    )
+    """
 
     df = None
 
@@ -99,13 +153,15 @@ def download_multiyear(
     # In the ACS, Sometimes the same variable is used for different things in different years.
     # For an example see https://arilamstein.com/blog/2024/05/28/creating-time-series-data-from-the-american-community-survey-acs/
     # This code alerts users of any variables which have had different labels over time.
-    warn_variable_changes(df, dataset, vintages, group)
+    warn_variable_changes(df, dataset, vintages, group, prompt)
 
     if drop_cols:
         df = df[[col for col in df.columns if col.startswith(group) or col == "Year"]]
 
     if rename_vars:
-        df = df.rename(columns=name_mapper(group=group, vintage=vintages[-1], dataset=dataset))
+        df = df.rename(
+            columns=name_mapper(group=group, vintage=vintages[-1], dataset=dataset)
+        )
 
     return df
 
@@ -116,16 +172,16 @@ def graph_multiyear(df, title, yaxis_title, y_cols=None, set_pio_default_rendere
 
     Parameters
     ----------
-    df : dataframe
+    df
         Must have a column called 'Year' which will serve as the x-axis.
-    title : str
+    title
         Title for the graph.
-    yaxis_title : str
+    yaxis_title
         Title for the y-axis.
-    y_cols : str | None
+    y_cols
         A list of columns in `df` to create lines for. If None then will graph all
         columns except "Year".
-    set_pio_default_renderer : bool
+    set_pio_default_renderer
         By default plotly generates interactive graphs. Unfortunately, these graphs
         do not render when notebooks are viewed on github. Setting this option to
         True (the default) sets plotlyio.renderers.default="vscode+png", which also
@@ -149,9 +205,9 @@ def graph_multiyear(df, title, yaxis_title, y_cols=None, set_pio_default_rendere
     )
     graph_ts_df(
         df,
-        ["Total", "Native", "Foreign-Born"],
         "Population by Nativity in Great Neck School District",
         "Population",
+        ["Total", "Native", "Foreign-Born"],
     )
     """
 
@@ -202,3 +258,50 @@ def graph_multiyear(df, title, yaxis_title, y_cols=None, set_pio_default_rendere
     )
 
     fig.show()
+
+
+def pct_change_multiyear(df):
+    """
+    Convert a multi-year dataframe from raw counts to percent change.
+
+    Essentially runs pd.DataFrame.pct_change on all columns of the dataframe except the "Year" column.
+    Rounds the results to 1 decimal point.
+
+    Parameters
+    ----------
+    df
+        Must have a column called 'Year'.
+
+    Returns
+    -------
+    A Dataframe
+
+    Examples
+    --------
+    from censusdis.datasets import ACS5
+    from censusdis.states import NY
+
+    from utils import download_multiyear, pct_change_multiyear, graph_multiyear
+
+    df = download_multiyear(
+        dataset=ACS5,
+        vintages=[2010, 2015, 2020],
+        group="B05012",
+        prompt=False,
+        state=NY,
+        school_district_unified="12510",
+    )
+
+    df = pct_change_multiyear(df)
+
+    print(df)
+    """
+
+    years = df["Year"]
+
+    df = df.pct_change() * 100
+    df = df.round(1)
+
+    df["Year"] = years
+
+    return df
