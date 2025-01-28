@@ -6,7 +6,8 @@ import censusdis.data as ced
 import plotly.graph_objects as go
 import plotly.io as pio
 
-
+# Code taken from the notebook linked to this github issue:
+# https://github.com/censusdis/censusdis/issues/325
 def name_mapper(group, vintage, dataset):
     def inner(variable: str):
         """Map from the variables we got back to their labels."""
