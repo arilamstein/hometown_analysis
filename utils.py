@@ -6,7 +6,7 @@ import censusdis.data as ced
 import plotly.graph_objects as go
 import plotly.io as pio
 
-# Code based on the notebook linked to this github issue:
+# Code based on the notebook linked to in this github issue:
 # https://github.com/censusdis/censusdis/issues/325
 def name_mapper(group, vintage, dataset):
     def inner(variable):
