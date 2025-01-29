@@ -6,7 +6,10 @@ import censusdis.data as ced
 import plotly.graph_objects as go
 import plotly.io as pio
 
-# Code based on the notebook linked to in this github issue:
+import re
+
+
+# This function is based on the notebook linked to in this github issue:
 # https://github.com/censusdis/censusdis/issues/325
 def name_mapper(group, vintage, dataset):
     def inner(variable):
@@ -16,9 +19,16 @@ def name_mapper(group, vintage, dataset):
             vars = ced.variables.search(
                 dataset, vintage, group_name=group, name=variable
             )
-            # Get the label and parse out the part we want:
+            # Census uses !! to indicate nesting of Labels. Ex. 'Estimate!!Total:'
+            # We care about the last part.
             label = vars.iloc[0]["LABEL"]
-            return label.split("!")[-1].split(":")[0]
+            label = re.split(r"!!", label)[-1]
+
+            # Starting in 2020 Labels which are parents of other Labels have a : as a suffix.
+            # See an example here: https://data.census.gov/table?q=country%20of%20birth&g=9700000US3612510
+            # (Ex. "Total:", "Asia:", "Eastern Asia:", "China:")
+            # For my purposes, it is better to drop this trailing :
+            return label[:-1] if label[-1] == ":" else label
         else:
             # Not in the group we are interested in, so leave it as is.
             return variable
