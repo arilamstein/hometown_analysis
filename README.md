@@ -15,7 +15,12 @@ I view this project as having 2 distinct phases:
   but I believe that they can be accessed via [IPUMS](https://www.ipums.org/).
 
 I am currently working on Phase 1, and am am recording my progress using Jupyter Notebooks:
+
+Getting Started:
   * [01-geographic-choice.ipynb](./01-geographic-choice.ipynb)
   * [02-geographic-stability.ipynb](./02-geographic-stability.ipynb)
   * [03-table-selection-and-ingestion.ipynb](./03-table-selection-and-ingestion.ipynb)
   * [04-multi-year-data.ipynb](./04-multi-year-data.ipynb)
+
+Analysis:
+  * [05-nativity.ipynb](./05-nativity.ipynb)
