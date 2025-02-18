@@ -102,7 +102,9 @@ def warn_variable_changes(df, dataset, vintages, group, prompt):
 def download_multiyear(
     dataset,
     vintages,
-    group,
+    download_variables=None,
+    *,
+    group=None,
     rename_vars=True,
     drop_cols=True,
     prompt=True,
@@ -117,8 +119,12 @@ def download_multiyear(
         Assumed to be `censusdis.datasets.ACS1` or `censusdis.datasets.ACS5`.
     vintages
         A list of years to download data for.
+    download_variables
+        The census variables to download, for example `["NAME", "B01001_001E"]`.
     group
-        The ACS table to download.
+        One or more groups (as defined by the U.S. Census for the data set)
+        whose variable values should be downloaded. These are in addition to
+        any specified in `download_variables`.
     rename_vars
         If True, rename the columns from variables (ex. "B01001_001E") to their labels (ex. "Total").
         The labels for the last year are used.
@@ -156,6 +162,7 @@ def download_multiyear(
 
         df_new = ced.download(
             dataset=dataset,
+            download_variables=download_variables,
             vintage=vintage,
             group=group,
             **kwargs,
@@ -171,15 +178,15 @@ def download_multiyear(
     # In the ACS, Sometimes the same variable is used for different things in different years.
     # For an example see https://arilamstein.com/blog/2024/05/28/creating-time-series-data-from-the-american-community-survey-acs/
     # This code alerts users of any variables which have had different labels over time.
-    warn_variable_changes(df, dataset, vintages, group, prompt)
+    #    warn_variable_changes(df, dataset, vintages, group, prompt)
 
-    if drop_cols:
-        df = df[[col for col in df.columns if col.startswith(group) or col == "Year"]]
+    # if drop_cols:
+    #     df = df[[col for col in df.columns if col.startswith(group) or col == "Year"]]
 
-    if rename_vars:
-        df = df.rename(
-            columns=name_mapper(group=group, vintage=vintages[-1], dataset=dataset)
-        )
+    # if rename_vars:
+    #     df = df.rename(
+    #         columns=name_mapper(group=group, vintage=vintages[-1], dataset=dataset)
+    #     )
 
     return df
 
