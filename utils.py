@@ -136,7 +136,8 @@ def download_multiyear(
     **kwargs,
 ):
     """
-    Download multiple years of ACS data into a single dataframe.
+    Download multiple years of ACS data into a single dataframe. Variables can be specified
+    individually by `download_variables` or as a table by `group`.
 
     Parameters
     ----------
@@ -148,8 +149,7 @@ def download_multiyear(
         The census variables to download, for example `["NAME", "B01001_001E"]`.
     group
         One or more groups (as defined by the U.S. Census for the data set)
-        whose variable values should be downloaded. These are in addition to
-        any specified in `download_variables`.
+        whose variable values should be downloaded.
     rename_vars
         If True, rename the columns from variables (ex. "B01001_001E") to their labels (ex. "Total").
         The labels for the last year are used.
@@ -187,6 +187,11 @@ def download_multiyear(
         drop_cols=True,
     )
     """
+    if (download_variables is None and group is None) or (
+        download_variables is not None and group is not None
+    ):
+        raise ValueError("Exactly one of download_variables and group must be set.")
+
     df = None
 
     for vintage in vintages:
