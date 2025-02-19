@@ -124,6 +124,27 @@ def warn_variable_changes(df, dataset, vintages, group, prompt):
                 if input("Continue downloading dataset (y/n)?") != "y":
                     raise VariableMistmatchOverTime()
 
+def warn_variable_changes_variables(df, dataset, vintages, download_variables, prompt):
+    years = df["Year"].unique()
+
+    for col in df.columns:
+        # Not all columns contain actual ACS data. The ones we care about have names like
+        # B01001_001E. That is, they start with the group name.
+        if not col in download_variables:
+            continue
+
+        unique_labels_for_variable = get_unique_labels_for_variable(
+            dataset, col, vintages
+        )
+
+        if len(unique_labels_for_variable) > 1:
+            print(f"Warning: {col} has had multiple labels over the selected years:")
+            for label, years in unique_labels_for_variable.items():
+                print(f"\t'{label}' in {years}")
+            if prompt:
+                if input("Continue downloading dataset (y/n)?") != "y":
+                    raise VariableMistmatchOverTime()
+
 
 def download_multiyear(
     dataset,
@@ -282,7 +303,7 @@ def download_multiyear_variables(
     # In the ACS, Sometimes the same variable is used for different things in different years.
     # For an example see https://arilamstein.com/blog/2024/05/28/creating-time-series-data-from-the-american-community-survey-acs/
     # This code alerts users of any variables which have had different labels over time.
-    # warn_variable_changes(df, dataset, vintages, group, prompt)
+    warn_variable_changes_variables(df, dataset, vintages, download_variables, prompt)
 
     if drop_cols:
         df = df[
