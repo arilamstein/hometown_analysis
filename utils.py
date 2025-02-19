@@ -9,42 +9,25 @@ import plotly.io as pio
 import re
 
 
+# When deciding whether a column is a Census variable, the test differs depending
+# on whether we got the data as a group (i.e. table) or as a specified list of
+# download_variables 
+def is_data_column(col, group, download_variables):
+    if group:
+        return col.startswith(group)
+    else:
+        return col in download_variables
+
 # This function is based on the notebook linked to in this github issue:
 # https://github.com/censusdis/censusdis/issues/325
-def name_mapper(group, vintage, dataset):
+def name_mapper(dataset, vintage, group, download_variables):
     def inner(variable):
         """Map from the variables we got back to their labels."""
-        if variable.startswith(group):
+        if is_data_column(variable, group, download_variables):
             # Look up details of the particular variable:
             vars = ced.variables.search(
                 dataset, vintage, group_name=group, name=variable
             )
-            # Census uses !! to indicate nesting of Labels. Ex. 'Estimate!!Total:'
-            # We care about the last part.
-            label = vars.iloc[0]["LABEL"]
-            label = re.split(r"!!", label)[-1]
-
-            # Starting in 2020 Labels which are parents of other Labels have a : as a suffix.
-            # See an example here: https://data.census.gov/table?q=country%20of%20birth&g=9700000US3612510
-            # (Ex. "Total:", "Asia:", "Eastern Asia:", "China:")
-            # For my purposes, it is better to drop this trailing :
-            return label[:-1] if label[-1] == ":" else label
-        else:
-            # Not in the group we are interested in, so leave it as is.
-            return variable
-
-    return inner
-
-
-# Note that the parameter order here is inverse to `name_mapper`. I think that this ordering
-# is more in-line with how censusdis orders things. And so when the two name_mappers are eventually
-# merged, this ordering is the one we should use.
-def name_mapper_variables(dataset, vintage, variables):
-    def inner(variable):
-        """Map from the variables we got back to their labels."""
-        if variable in variables:
-            # Look up details of the particular variable:
-            vars = ced.variables.search(dataset, vintage, name=variable)
             # Census uses !! to indicate nesting of Labels. Ex. 'Estimate!!Total:'
             # We care about the last part.
             label = vars.iloc[0]["LABEL"]
@@ -210,7 +193,7 @@ def download_multiyear(
 
     if rename_vars:
         df = df.rename(
-            columns=name_mapper(dataset=dataset, vintage=vintages[-1], group=group)
+            columns=name_mapper(dataset=dataset, vintage=vintages[-1], group=group, download_variables=None)
         )
 
     return df
@@ -297,8 +280,8 @@ def download_multiyear_variables(
 
     if rename_vars:
         df = df.rename(
-            columns=name_mapper_variables(
-                dataset=dataset, vintage=vintages[-1], variables=download_variables
+            columns=name_mapper(
+                dataset=dataset, vintage=vintages[-1], group=None, download_variables=download_variables
             )
         )
 
