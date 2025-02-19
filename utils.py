@@ -9,7 +9,7 @@ import plotly.io as pio
 import re
 
 
-def is_variable_column(col, group=None, download_variables=None):
+def is_variable_column(col, download_variables, group):
     """
     Determine whether a column is a Census variable.
 
@@ -20,18 +20,20 @@ def is_variable_column(col, group=None, download_variables=None):
     In practice this function is used to drop columns that contain metadata that I don't need.
     We want columns like "B01001_001E" and not like "STATE"
     """
-    if group:
-        return col.startswith(group)
-    else:
-        return col in download_variables
+    if group and col.startswith(group):
+        return True
+    if download_variables and col in download_variables:
+        return True
+
+    return False
 
 
 # This function is based on the notebook linked to in this github issue:
 # https://github.com/censusdis/censusdis/issues/325
-def name_mapper(dataset, vintage, group, download_variables):
+def name_mapper(dataset, vintage, download_variables, group):
     def inner(variable):
         """Map from the variables we got back to their labels."""
-        if is_variable_column(variable, group, download_variables):
+        if is_variable_column(variable, download_variables, group):
             # Look up details of the particular variable:
             vars = ced.variables.search(
                 dataset, vintage, group_name=group, name=variable
@@ -94,7 +96,7 @@ class VariableMistmatchOverTime(Exception):
     pass
 
 
-def warn_variable_changes(df, dataset, vintages, prompt, group, download_variables):
+def warn_variable_changes(df, dataset, vintages, download_variables, group, prompt):
     """
     In the ACS, Sometimes the same variable is used for different things in different years.
     For an example see https://arilamstein.com/blog/2024/05/28/creating-time-series-data-from-the-american-community-survey-acs/
@@ -106,7 +108,7 @@ def warn_variable_changes(df, dataset, vintages, prompt, group, download_variabl
     years = df["Year"].unique()
 
     for col in df.columns:
-        if not is_variable_column(col, group, download_variables):
+        if not is_variable_column(col, download_variables, group):
             continue
 
         unique_labels_for_variable = get_unique_labels_for_variable(
@@ -146,8 +148,8 @@ def download_multiyear(
         The census variables to download, for example `["NAME", "B01001_001E"]`.
     group
         One or more groups (as defined by the U.S. Census for the data set)
-        whose variable values should be downloaded. Currently only one of `download_variables` or
-        `group` can be set.
+        whose variable values should be downloaded. These are in addition to
+        any specified in `download_variables`.
     rename_vars
         If True, rename the columns from variables (ex. "B01001_001E") to their labels (ex. "Total").
         The labels for the last year are used.
@@ -185,11 +187,6 @@ def download_multiyear(
         drop_cols=True,
     )
     """
-    if (download_variables is None and group is None) or (
-        download_variables is not None and group is not None
-    ):
-        raise ValueError("Exactly one of group and download_variables must be set.")
-
     df = None
 
     for vintage in vintages:
@@ -199,8 +196,8 @@ def download_multiyear(
         df_new = ced.download(
             dataset=dataset,
             vintage=vintage,
-            group=group,
             download_variables=download_variables,
+            group=group,
             **kwargs,
         )
 
@@ -211,14 +208,14 @@ def download_multiyear(
         else:
             df = pd.concat([df, df_new])
 
-    warn_variable_changes(df, dataset, vintages, prompt, group, download_variables)
+    warn_variable_changes(df, dataset, vintages, download_variables, group, prompt)
 
     if drop_cols:
         df = df[
             [
                 col
                 for col in df.columns
-                if is_variable_column(col, group, download_variables) or col == "Year"
+                if is_variable_column(col, download_variables, group) or col == "Year"
             ]
         ]
 
@@ -227,8 +224,8 @@ def download_multiyear(
             columns=name_mapper(
                 dataset=dataset,
                 vintage=vintages[-1],
-                group=group,
                 download_variables=download_variables,
+                group=group,
             )
         )
 
