@@ -11,12 +11,13 @@ import re
 
 # When deciding whether a column is a Census variable, the test differs depending
 # on whether we got the data as a group (i.e. table) or as a specified list of
-# download_variables 
+# download_variables
 def is_data_column(col, group, download_variables):
     if group:
         return col.startswith(group)
     else:
         return col in download_variables
+
 
 # This function is based on the notebook linked to in this github issue:
 # https://github.com/censusdis/censusdis/issues/325
@@ -193,7 +194,12 @@ def download_multiyear(
 
     if rename_vars:
         df = df.rename(
-            columns=name_mapper(dataset=dataset, vintage=vintages[-1], group=group, download_variables=None)
+            columns=name_mapper(
+                dataset=dataset,
+                vintage=vintages[-1],
+                group=group,
+                download_variables=None,
+            )
         )
 
     return df
@@ -281,7 +287,10 @@ def download_multiyear_variables(
     if rename_vars:
         df = df.rename(
             columns=name_mapper(
-                dataset=dataset, vintage=vintages[-1], group=None, download_variables=download_variables
+                dataset=dataset,
+                vintage=vintages[-1],
+                group=None,
+                download_variables=download_variables,
             )
         )
 
