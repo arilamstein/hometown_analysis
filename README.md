@@ -5,9 +5,9 @@ An attempt to understand how the demographics of my hometown (Great Neck, NY) ch
   1. Immigration from Iran, which began during the Iranian Revolution of 1978.
   2. Immigration from East Asia, which began later.
 
-One of my goals is to answer this question in such a way that it can be used as a starting off point for others to do similar analyses. To that end, this repo is organized as a sequence of Jupyter Notebooks that described my workflow. Feel free to fork this repo and edit the variables to answer your own questions. If you wind up using this repo to conduct your own analysis, I would love to know. You can contact me via my [website](https://arilamstein.com/).
+The analysis is done in a series of Jupyter Notebooks and released under the MIT License. I encourage you to fork this repo and edit the variables to answer similar questions about your own hometown! If you wind up using this repo to conduct your own analysis, I would love to know. You can contact me via my [website](https://arilamstein.com/).
 
-This repo uses the Python package `censusdis` to download American Community Survey (ACS) 5-Year Estimates from the Census Bureau API. A limitation of this approach is that the first 5-year ACS was published in 2009. You are not supposed to compare overlapping years. This gives us just 3 datapoints: 2009, 2014 and 2019. (The 2024 5-year ACS is scheduled for release at the end of the 2025).
+My approach is to use the Python package `censusdis` to download American Community Survey (ACS) 5-Year Estimates from the Census Bureau API. A limitation of this approach is that the first 5-year ACS was published in 2009. You are not supposed to compare overlapping years. This gives us just 3 datapoints: 2009, 2014 and 2019. (The 2024 5-year ACS is scheduled for release at the end of the 2025).
 
 ### Getting Started
 
@@ -15,14 +15,14 @@ Prior to analyzing any data I did the following:
   * [01-geographic-choice.ipynb](./01-geographic-choice.ipynb). How do you define a "hometown" using Census Bureau geography?
   * [02-geographic-stability.ipynb](./02-geographic-stability.ipynb). Will an analysis over time be measuring the same area?
   * [03-table-selection-and-ingestion.ipynb](./03-table-selection-and-ingestion.ipynb). Which ACS tables best answer the specific questions I have?
-  * [04-multi-year-data.ipynb](./04-multi-year-data.ipynb). I was surprised that neither the Census API nor censusdis have built-in support for downloading and analyzing multiple year's worth of ACS data. I implemented my own solution and this workbook demonstrates its usage.
+  * [04-multi-year-data.ipynb](./04-multi-year-data.ipynb). I was surprised that neither the Census API nor censusdis have built-in support for downloading and analyzing multiple year's worth of ACS data. I implemented my own solution and this workbook demonstrates how to use it.
 
 ### Analysis
 
 After completing the above I was able to start trying to answer my original question:
   * [05-nativity.ipynb](./05-nativity.ipynb). "Nativity" is the term for whether a resident was born in the US or another country. Analyzing nativity over time seems like a reasonable proxy for immigration.
-  * [06-place-of-birth.ipynb](./06-place-of-birth.ipynb). Census asks all Foreign-Born residents which country they were born in. This allows us to compare immigration from Iran vs. East Asia over time. 
-  * [07-race.ipynb](./07-race.ipynb). Has the immigration from Asia measurably changed the racial composition of my hometown?
+  * [06-place-of-birth.ipynb](./06-place-of-birth.ipynb). Census asks residents which country they were born in. This allows us to compare immigration from Iran vs. East Asia over time. 
+  * [07-race.ipynb](./07-race.ipynb). Has the immigration from Asia changed the racial composition of my hometown?
   * [08-china-breakdown.ipynb](./08-china-breakdown.ipynb). A friend asked whether it was possible to subdivide immigration from China into Taiwan,  Hong Kong and Mainland China. It is, and this workbook shows how.
 
 ### Further Reading
