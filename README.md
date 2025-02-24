@@ -15,7 +15,7 @@ Prior to analyzing any data I did the following:
   * [01-geographic-choice.ipynb](./01-geographic-choice.ipynb). How do you define a "hometown" using Census Bureau geography?
   * [02-geographic-stability.ipynb](./02-geographic-stability.ipynb). Will an analysis over time be measuring the same area?
   * [03-table-selection-and-ingestion.ipynb](./03-table-selection-and-ingestion.ipynb). Which ACS tables best answer the specific questions I have?
-  * [04-multi-year-data.ipynb](./04-multi-year-data.ipynb). I was surprised that both the Census API and censusdis do not have built-in support for downloading and analyzing multiple year's worth of ACS data. I implemented my own solution and this workbook demonstrates its usage.
+  * [04-multi-year-data.ipynb](./04-multi-year-data.ipynb). I was surprised that neither the Census API nor censusdis have built-in support for downloading and analyzing multiple year's worth of ACS data. I implemented my own solution and this workbook demonstrates its usage.
 
 ### Analysis
 
@@ -23,7 +23,7 @@ After completing the above I was able to start trying to answer my original ques
   * [05-nativity.ipynb](./05-nativity.ipynb). "Nativity" is the term for whether a resident was born in the US or another country. Analyzing nativity over time seems like a reasonable proxy for immigration.
   * [06-place-of-birth.ipynb](./06-place-of-birth.ipynb). Census asks all Foreign-Born residents which country they were born in. This allows us to compare immigration from Iran vs. East Asia over time. 
   * [07-race.ipynb](./07-race.ipynb). Has the immigration from Asia measurably changed the racial composition of my hometown?
-  * [08-china-breakdown.ipynb](./08-china-breakdown.ipynb). A friend asked whether it was possible to subdivide immigration from China into Taiwan,  Hong Kong and Mainland CHina. It is, and this workbook shows how.
+  * [08-china-breakdown.ipynb](./08-china-breakdown.ipynb). A friend asked whether it was possible to subdivide immigration from China into Taiwan,  Hong Kong and Mainland China. It is, and this workbook shows how.
 
 ### Further Reading
 
