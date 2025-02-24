@@ -7,7 +7,7 @@ An attempt to understand how the demographics of my hometown (Great Neck, NY) ch
 
 One of my goals is to answer this question in such a way that it can be used as a starting off point for others to do similar analyses. To that end, this repo is organized as a sequence of Jupyter Notebooks that described my workflow. Feel free to fork this repo and edit the variables to answer your own questions. If you wind up using this repo to conduct your own analysis, I would love to know. You can contact me via my [website](https://arilamstein.com/).
 
-This repo uses the Python package [censusdis](https://github.com/censusdis/censusdis) to analyze the [American Community Survey (ACS) 5-Year Estimates](https://en.wikipedia.org/wiki/American_Community_Survey). A limitation of this approach is that the first 5-year ACS was published in 2009. You are not supposed to compare overlapping years. This gives us just 3 datapoints: 2009, 2014 and 2019. (The 2024 5-year ACS is scheduled for release at the end of the 2025).
+This repo uses the Python package `censusdis` to download American Community Survey (ACS) 5-Year Estimates from the Census Bureau API. A limitation of this approach is that the first 5-year ACS was published in 2009. You are not supposed to compare overlapping years. This gives us just 3 datapoints: 2009, 2014 and 2019. (The 2024 5-year ACS is scheduled for release at the end of the 2025).
 
 ### Getting Started
 
