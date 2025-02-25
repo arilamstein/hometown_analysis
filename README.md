@@ -5,7 +5,7 @@ An attempt to understand how the demographics of my hometown (Great Neck, NY) ch
   1. Immigration from Iran, which began during the Iranian Revolution of 1978.
   2. Immigration from East Asia, which began later.
 
-The analysis is done in a series of Jupyter Notebooks and released under the MIT License. I encourage you to fork this repo and edit the variables to answer similar questions about your own hometown! If you wind up using this repo to conduct your own analysis, I would love to know. You can contact me via the contact form on my [website](https://arilamstein.com/).
+The analysis is done in a series of Jupyter Notebooks and released under the MIT License. I encourage you to fork this repo and edit the notebooks to answer similar questions about your own hometown! If you wind up using this repo to conduct your own analysis, I would love to know. You can contact me via the contact form on my [website](https://arilamstein.com/).
 
 My approach is to use the Python package `censusdis` to download American Community Survey (ACS) 5-Year Estimates from the Census Bureau API. A limitation of this approach is that the first 5-year ACS was published in 2009. You are not supposed to compare overlapping years. This gives us just 3 datapoints to compare: 2009, 2014 and 2019. (The 2024 5-year ACS is scheduled to be released at the end of the 2025).
 
@@ -23,7 +23,7 @@ These workbooks go into more detail, and will be of interest to anyone who wants
 
 ### Analysis
 
-After completing the above I was able to start trying to answer my original question:
+After completing the above I was able to start answering my original question:
   * [05-nativity.ipynb](./05-nativity.ipynb). "Nativity" is the term for whether a resident was born in the US or another country. Analyzing nativity over time seems like a reasonable proxy for immigration.
   * [06-place-of-birth.ipynb](./06-place-of-birth.ipynb). Census asks residents which country they were born in. This allows us to compare immigration from Iran vs. East Asia over time. 
   * [07-race.ipynb](./07-race.ipynb). Has immigration changed the racial composition of my hometown?
