@@ -66,10 +66,9 @@ def get_unique_labels_for_variable(acs, variable, years):
     For example, B08006_017E in 2005 had label 'Estimate!!Total!!Motorcycle'. But in 2006 it switched to
     'Estimate!!Total!!Worked at home'. And in 2019 it changed to 'Estimate!!Total:!!Worked from home'.
 
-    Note that ":" is removed from the labels before doing any comparisons. This is because in 2020
-    many labels that are parents of other labels added a trailing ":". An example is "Total" became "Total:".
-    Removing all instances of ":" reduces the number of false positives and it is hard to imagine a situation where
-    it will introduce a false negative.
+    To reduce false positives labels are converted to lower case prior to comparison ("Race" is
+    inconsistently capitalized over the years). Also, all ":" are removed prior to comparison so that
+    "estimate!!total:!!native" is the same as "estimate!!total!!native".
 
     Parameters:
     - acs: The ACS to use. Ex. censusdis.datasets.ACS1
@@ -84,7 +83,7 @@ def get_unique_labels_for_variable(acs, variable, years):
     labels = defaultdict(list)
 
     for year in years:
-        label = ced.variables.get(acs, year, variable)["label"]
+        label = ced.variables.get(acs, year, variable)["label"].lower()
         label = label.replace(":", "")
 
         labels[label].append(year)
