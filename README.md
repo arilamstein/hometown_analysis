@@ -7,15 +7,19 @@ An attempt to understand how the demographics of my hometown (Great Neck, NY) ch
 
 The analysis is done in a series of Jupyter Notebooks and released under the MIT License. I encourage you to fork this repo and edit the variables to answer similar questions about your own hometown! If you wind up using this repo to conduct your own analysis, I would love to know. You can contact me via the contact form on my [website](https://arilamstein.com/).
 
-My approach is to use the Python package `censusdis` to download American Community Survey (ACS) 5-Year Estimates from the Census Bureau API. A limitation of this approach is that the first 5-year ACS was published in 2009. You are not supposed to compare overlapping years. This gives us just 3 datapoints: 2009, 2014 and 2019. (The 2024 5-year ACS is scheduled for release at the end of the 2025).
+My approach is to use the Python package `censusdis` to download American Community Survey (ACS) 5-Year Estimates from the Census Bureau API. A limitation of this approach is that the first 5-year ACS was published in 2009. You are not supposed to compare overlapping years. This gives us just 3 datapoints to compare: 2009, 2014 and 2019. (The 2024 5-year ACS is scheduled to be released at the end of the 2025).
 
 ### Getting Started
 
-Prior to analyzing any data I did the following:
+I began the project by deciding which Census geography to use. I then decided which tables to analyze. 
+
+I was then surprised to learn that neither the Census API nor censusdis have built-in support for downloading and analyzing multiple year's worth of ACS data. So I implemented it myself. 
+
+These workbooks go into more detail, and will be of interest to anyone who wants to modify this repo to do a similar analysis:
   * [01-geographic-choice.ipynb](./01-geographic-choice.ipynb). How do you define a "hometown" using Census Bureau geography?
   * [02-geographic-stability.ipynb](./02-geographic-stability.ipynb). Will an analysis over time be measuring the same area?
   * [03-table-selection-and-ingestion.ipynb](./03-table-selection-and-ingestion.ipynb). Which ACS tables best answer the specific questions I have?
-  * [04-multi-year-data.ipynb](./04-multi-year-data.ipynb). I was surprised that neither the Census API nor censusdis have built-in support for downloading and analyzing multiple year's worth of ACS data. I implemented my own solution and this workbook demonstrates how to use it.
+  * [04-multi-year-data.ipynb](./04-multi-year-data.ipynb). How to use the functions I wrote to download and analyze multiple years worth of Census data in a single line of code.
 
 ### Analysis
 
@@ -23,7 +27,7 @@ After completing the above I was able to start trying to answer my original ques
   * [05-nativity.ipynb](./05-nativity.ipynb). "Nativity" is the term for whether a resident was born in the US or another country. Analyzing nativity over time seems like a reasonable proxy for immigration.
   * [06-place-of-birth.ipynb](./06-place-of-birth.ipynb). Census asks residents which country they were born in. This allows us to compare immigration from Iran vs. East Asia over time. 
   * [07-race.ipynb](./07-race.ipynb). Has immigration changed the racial composition of my hometown?
-  * [08-china-breakdown.ipynb](./08-china-breakdown.ipynb). A friend asked whether it was possible to subdivide immigration from China into Taiwan,  Hong Kong and Mainland China. It is, and this workbook shows how.
+  * [08-china-breakdown.ipynb](./08-china-breakdown.ipynb). Someone asked whether it was possible to subdivide immigration from China into Taiwan,  Hong Kong and Mainland China. It is, and this workbook shows how.
 
 ### Further Reading
 
