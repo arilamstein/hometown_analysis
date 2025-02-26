@@ -38,7 +38,7 @@ This analysis is limited by the start date of the first 5-year ACS (2009). Two p
   1. Combine ACS data with data from the 2000 Decennial Census. I believe that this data is available via the Census API, although I have not worked with it before.
   2. Combine ACS data with data from pre-2000 Decennial Censuses. I believe that this data is not available via the Census API, but can be accessed via IPUMS.
 
-If you would like to learn about any future development in this project please [subscribe](https://arilamstein.com/) to my newsletter.
+If you would like to learn about future development in this project please subscribe to my newsletter. The signup form is on the bottom of my [homepage](https://arilamstein.com/).
 
 ### Blog Posts
 
