@@ -16,7 +16,7 @@ ACS data on School Districts is published in "5-year estimates". The first 5-yea
 
 ## Results
 
-The analytical results are captured in 4 Jupyter notebooks:
+The analytical results are captured in four Jupyter notebooks:
 
   * [05-nativity.ipynb](./05-nativity.ipynb). "Nativity" is the term Census uses for whether a resident was born in the US or another country. Analyzing nativity over time seems like a reasonable proxy for immigration.
   * [06-place-of-birth.ipynb](./06-place-of-birth.ipynb). Census asks residents which country they were born in. This allowed me to compare immigration from Iran vs. East Asia over time. 
