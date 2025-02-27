@@ -31,7 +31,7 @@ Rather than try to answer every possible question, I created a guide on how to m
 
 See [DEVELOPER.md](./DEVELOPER.md) to learn more. 
 
-### Future Work
+## Future Work
 
 This analysis is limited by the start date of the first 5-year ACS (2009). Two potential ways to go further back in time are:
 
@@ -40,7 +40,7 @@ This analysis is limited by the start date of the first 5-year ACS (2009). Two p
 
 If you would like to learn about future development in this project please subscribe to my newsletter. The signup form is on the bottom of my [homepage](https://arilamstein.com/).
 
-### Blog Posts
+## Blog Posts
 
 In addition to the above notebooks, you may enjoy these blog posts about this project. They are presented in chronological order and reflect milestones in the project.
    * [New Project: hometown_analysis](https://arilamstein.com/blog/2025/01/13/new-project-hometown_analysis/)
