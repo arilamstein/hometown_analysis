@@ -1,6 +1,6 @@
 # hometown_analysis
 
-An analysis of immigration to my hometown (Great Neck, NY) over time. During recent visits to my hometown residents emphasized that the town had changed a lot since I live there. I wanted to try and measure that change. 
+An analysis of immigration to my hometown (Great Neck, NY) over time. During recent visits people said that the town had changed a lot since I live there. I wanted to try and measure that change. 
 
 Additionally, this repo attempts to serve as a template for others looking to do similar analyses.
 
@@ -36,7 +36,7 @@ This analysis is limited by the start date of the first 5-year ACS (2009). Two p
   1. Combine ACS data with data from the 2000 Decennial Census. I believe that this data is available via the Census API, although I have not worked with it before.
   2. Combine ACS data with data from pre-2000 Decennial Censuses. I believe that this data is not available via the Census API, but can be accessed via IPUMS.
 
-If you would like to learn about future development please subscribe to my newsletter. The signup form is on the bottom of my [homepage](https://arilamstein.com/).
+If you would like to learn about future development then please subscribe to my newsletter. The signup form is on the bottom of my [homepage](https://arilamstein.com/).
 
 ## Blog Posts
 
