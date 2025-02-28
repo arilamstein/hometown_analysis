@@ -8,7 +8,7 @@ Additionally, this repo attempts to serve as a template for others looking to do
 
 I used the Python package `censusdis` to access data from the Census Bureau's American Community Survey (ACS). The geography I chose is the School District I attended as a child (Great Neck Union Free School District). 
 
-ACS data on School Districts is published in "5-year estimates". The first 5-year estimate was published in 2009 and the last was published in 2023. You are not supposed to compare overlapping 5-year periods, so I chose to compare the first year, the last year and the year in the middle (2009, 2016 and 2023).
+ACS data on School Districts is published in "5-year estimates". The first 5-year estimate was published in 2009 and the last was published in 2023. You are not supposed to compare overlapping 5-year periods, so I chose to compare the first year, the last year and the year in the middle (2016).
 
 You can learn more about my design decisions in [DEVELOPER.md](./DEVELOPER.md).
 
@@ -32,6 +32,8 @@ This analysis is limited by the start date of the first 5-year ACS (2009). Two p
 
   1. Combine ACS data with data from the 2000 Decennial Census. I believe that this data is available via the Census API, although I have not worked with it before.
   2. Combine ACS data with data from pre-2000 Decennial Censuses. I believe that this data is not available via the Census API, but can be accessed via IPUMS.
+
+Another idea is to create a web app that lets people apply the same analysis to other geographies. (This would be similar to the [Covid Demographics Explorer](https://arilamstein.com/covid-demographics-explorer/) that I created last year).
 
 If you would like to be notified about future development then please subscribe to my newsletter. The signup form is on the bottom of my [homepage](https://arilamstein.com/).
 
