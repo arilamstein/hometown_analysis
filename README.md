@@ -24,7 +24,7 @@ At a high level: overall immigration increased slightly, but the location where 
 
 Analyses like this often cause people to ask: "What about ...?"
 
-I designed this repository to be easy to modify. If you would like to tweak this analysis to answer a slightly different question (such as a different geography, or different tables), please read [DEVELOPER.md](./DEVELOPER.md). 
+I designed this analysis to be easy to modify. If you would like to tweak it to answer a slightly different question (such as a different geography, or different tables), please read [DEVELOPER.md](./DEVELOPER.md). 
 
 ## Future Work
 
