@@ -13,7 +13,7 @@ You should then be able to execute all the code in the notebooks locally. I pers
 
 ## Working with Census Data
 
-As modify the analysis you will likely have questions about Census-specific topics. I created four Notebooks that might help you:
+As you modify the analysis you will likely have questions about Census-specific topics. I created four Notebooks that might help you:
 
   * [01-geographic-choice.ipynb](./01-geographic-choice.ipynb) explains how I chose the School District geography.
   * [02-geographic-stability.ipynb](./02-geographic-stability.ipynb) shows how I verified that the geography was stable over time.
