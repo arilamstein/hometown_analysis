@@ -43,3 +43,4 @@ In addition to the above notebooks I wrote three blog posts about this project. 
    * [New Project: hometown_analysis](https://arilamstein.com/blog/2025/01/13/new-project-hometown_analysis/)
    * [New Python Functions for Working with Multi-Year ACS Data](https://arilamstein.com/blog/2025/01/29/new-python-functions-for-working-with-multi-year-acs-data/)
    * [New Parameter to `download_multiyear`](https://arilamstein.com/blog/2025/02/21/new-parameter-to-download_multiyear/)
+   * [Using Python to Measure Immigration Trends](https://arilamstein.com/blog/2025/03/04/using-python-to-measure-immigration-trends/)
